@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/ksmkhnads/go-microservices/go-microservices/internal/database"
-	"github.com/ksmkhnads/go-microservices/go-microservices/internal/models"
+	"github.com/ksmkhnads/go-microservices/internal/database"
+	"github.com/ksmkhnads/go-microservices/internal/models"
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
@@ -12,6 +12,18 @@ type Server interface {
 	Start() error
 	Readiness(ctx echo.Context) error
 	Liveness(ctx echo.Context) error
+
+	GetAllCustomers(ctx echo.Context) error
+	AddCustomer(ctx echo.Context) error
+	GetCustomerById(ctx echo.Context) error
+	UpdateCustomer(ctx echo.Context) error
+	DeleteCustomer(ctx echo.Context) error
+
+	GetAllProducts(ctx echo.Context) error
+	AddProduct(ctx echo.Context) error
+
+	GetAllServices(ctx echo.Context) error
+	AddService(ctx echo.Context) error
 }
 
 type EchoServer struct {
@@ -39,6 +51,21 @@ func (s *EchoServer) Start() error {
 func (s *EchoServer) registerRoutes() {
 	s.echo.GET("/readiness", s.Readiness)
 	s.echo.GET("/liveness", s.Liveness)
+
+	cg := s.echo.Group("/customers")
+	cg.GET("", s.GetAllCustomers)
+	cg.POST("", s.AddCustomer)
+	cg.GET("/:id", s.GetCustomerById)
+	cg.PUT("/:id", s.UpdateCustomer)
+	cg.DELETE("/:id", s.DeleteCustomer)
+
+	pg := s.echo.Group("/products")
+	pg.GET("", s.GetAllProducts)
+	pg.POST("", s.AddProduct)
+
+	sg := s.echo.Group("/services")
+	sg.GET("", s.GetAllServices)
+	sg.POST("", s.AddService)
 }
 
 func (s *EchoServer) Readiness(ctx echo.Context) error {

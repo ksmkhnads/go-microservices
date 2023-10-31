@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/ksmkhnads/go-microservices/go-microservices/internal/database"
-	"github.com/ksmkhnads/go-microservices/go-microservices/internal/server"
+	"github.com/ksmkhnads/go-microservices/internal/database"
+	"github.com/ksmkhnads/go-microservices/internal/server"
 	"log"
 )
 
